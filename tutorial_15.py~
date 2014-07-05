@@ -1,8 +1,0 @@
-#tutorial #15
-#READING FROM THE FIIILE!
-
-from sys import argv
-
-script, filename = argv
-
-txt = open(filename) # much more easier than in other languages, Thanks!
