@@ -1,84 +1,78 @@
-#tutorial 41
+#tutorial 42
+## Animal is-a object (yes, sort of confusing) look at the extra credit
+class Animal(object):
+    pass
 
-import random
-from urllib import urlopen
-import sys
+## Dog is-a Animal inherited class
+class Dog(Animal):
 
-WORD_URL = "http://learncodethehardway.org/words.txt"
-WORDS = []
+    def __init__(self, name):
+        ## Dog has-a name
+        self.name = name
 
-PHRASES = {
-    "class %%%(%%%):":
-      "Make a class named %%% that is-a %%%.",
-    "class %%%(object):\n\tdef __init__(self, ***)" :
-      "class %%% has-a __init__ that takes self and *** parameters.",
-    "class %%%(object):\n\tdef ***(self, @@@)":
-      "class %%% has-a function named *** that takes self and @@@ parameters.",
-    "*** = %%%()":
-      "Set *** to an instance of class %%%.",
-    "***.***(@@@)":
-      "From *** get the *** function, and call it with parameters self, @@@.",
-    "***.*** = '***'":
-      "From *** get the *** attribute and set it to '***'."
-}
+## Cat is-a Animal inherited class
+class Cat(Animal):
 
-# do they want to drill phrases first
-PHRASE_FIRST = False
-if len(sys.argv) == 2 and sys.argv[1] == "english":
-    PHRASE_FIRST = True
+    def __init__(self, name):
+        ## Cat has-a name
+        self.name = name
 
-# load up the words from the website
-for word in urlopen(WORD_URL).readlines():
-    WORDS.append(word.strip())
+##Person is-a object
+class Person(object):
 
+    def __init__(self, name):
+        ## Person has-a name
+        self.name = name
 
-def convert(snippet, phrase):
-    class_names = [w.capitalize() for w in
-                   random.sample(WORDS, snippet.count("%%%"))]
-    other_names = random.sample(WORDS, snippet.count("***"))
-    results = []
-    param_names = []
+        ## Person has-a pet of some kind
+        self.pet = None
 
-    for i in range(0, snippet.count("@@@")):
-        param_count = random.randint(1,3)
-        param_names.append(', '.join(random.sample(WORDS, param_count)))
+## Cat is-a Person inherited class
+class Employee(Person):
 
-    for sentence in snippet, phrase:
-        result = sentence[:]
+    def __init__(self, name, salary):
+        ## ?? hmm what is this strange magic?
+        super(Employee, self).__init__(name)
+        ## Employee has-a salary
+        self.salary = salary
 
-        # fake class names
-        for word in class_names:
-            result = result.replace("%%%", word, 1)
+## Fish is-a object
+class Fish(object):
+    pass
 
-        # fake other names
-        for word in other_names:
-            result = result.replace("***", word, 1)
+## Salmon is-a inherited Fish object
+class Salmon(Fish):
+    pass
 
-        # fake parameter lists
-        for word in param_names:
-            result = result.replace("@@@", word, 1)
-
-        results.append(result)
-
-    return results
+## Halibut is-a inherited Fish object
+class Halibut(Fish):
+    pass
 
 
-# keep going until they hit CTRL-D
-try:
-    while True:
-        snippets = PHRASES.keys()
-        random.shuffle(snippets)
+## rover is-a Dog
+rover = Dog("Rover")
 
-        for snippet in snippets:
-            phrase = PHRASES[snippet]
-            question, answer = convert(snippet, phrase)
-            if PHRASE_FIRST:
-                question, answer = answer, question
+## satar is-a Cat
+satan = Cat("Satan")
 
-            print question
+## maru is-a person
+mary = Person("Mary")
 
-            raw_input("> ")
-            print "ANSWER:  %s\n\n" % answer
-except EOFError:
-    print "\nBye"
+## marys pet is satan
+mary.pet = satan
+
+## Frank is-a employee which has-a name Frank and salary 120000
+frank = Employee("Frank", 120000)
+
+## franks pet is rober
+frank.pet = rover
+
+## flipper is-a Fish
+flipper = Fish()
+
+## crouse is-a Salmon
+crouse = Salmon()
+
+## harry is-a Hallibut
+harry = Halibut()
 
